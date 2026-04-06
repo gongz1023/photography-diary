@@ -19,14 +19,33 @@ app.get('/:folder', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '_site', 'album', 'index.html'));
 });
 
-async function getAlbums() {
-  const result = await cloudinary.search
-    .expression('resource_type:image')
-    .sort_by('created_at', 'desc')
-    .max_results(2500)
-    .execute();
+async function getAllResources() {
+  let allResources = [];
+  let cursor = null;
 
-  const resources = result.resources || [];
+  do {
+    let query = cloudinary.search
+      .expression('resource_type:image')
+      .sort_by('created_at', 'desc')
+      .max_results(500);
+
+    if (cursor) query = query.next_cursor(cursor);
+
+    const result = await query.execute();
+    allResources = allResources.concat(result.resources || []);
+    cursor = result.next_cursor;
+    console.log('Fetched:', allResources.length, 'resources');
+
+  } while (cursor);
+
+  return allResources;
+}
+
+async function getAlbums() {
+  console.log('Fetching all resources from Cloudinary...');
+  const resources = await getAllResources();
+  console.log('Total fetched:', resources.length);
+
   const folderMap = new Map();
 
   resources.forEach(resource => {
@@ -77,6 +96,7 @@ app.get('/.netlify/functions/albums', async (req, res) => {
     const albums = await getAlbums();
     res.json({ albums, total: albums.length });
   } catch (e) {
+    console.error('Error:', e.message);
     res.status(500).json({ error: e.message });
   }
 });
@@ -88,6 +108,7 @@ app.get('/.netlify/functions/album', async (req, res) => {
     const images = await getAlbum(folder);
     res.json({ folder, images, total: images.length });
   } catch (e) {
+    console.error('Error:', e.message);
     res.status(500).json({ error: e.message });
   }
 });

@@ -37,11 +37,12 @@
     .album-date{font-size:1.15rem;font-weight:600;margin-bottom:6px;letter-spacing:-0.01em}
     .album-count{color:var(--muted);font-size:.9rem;display:flex;align-items:center;gap:6px}
     .album-count svg{width:16px;height:16px;opacity:.7}
-    .pagination{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:60px;padding:20px}
-    .pagination button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:12px;cursor:pointer;transition:all .2s;font-size:.95rem;font-weight:500}
-    .pagination button:hover:not(:disabled){background:var(--card-hover);border-color:var(--accent)}
-    .pagination button:disabled{opacity:.4;cursor:not-allowed}
-    .pagination .page-info{color:var(--muted);font-size:.95rem;padding:0 8px}
+    .pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:60px;padding:20px;flex-wrap:wrap}
+    .pagination button{min-width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:0 16px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:.9rem;font-weight:500;display:flex;align-items:center;justify-content:center}
+    .pagination button:hover:not(:disabled){background:var(--card-hover);border-color:var(--accent);transform:translateY(-2px)}
+    .pagination button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+    .pagination .page-info{color:var(--text);font-size:.95rem;padding:0 12px;min-width:80px;text-align:center}
+    .pagination .page-numbers{display:flex;gap:6px}
     .site-footer{text-align:center;padding:40px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
     .site-footer a{color:var(--accent);transition:opacity .2s}
     .site-footer a:hover{opacity:.8}
@@ -110,7 +111,7 @@
         const data = await response.json();
         albums = data.albums || [];
         totalPages = Math.max(1, Math.ceil(albums.length / PER_PAGE));
-        console.log('Loaded albums:', albums.length, 'Total pages:', totalPages);
+        
         loading.style.display = 'none';
         if (albums.length === 0) {
           emptyState.style.display = 'block';
@@ -130,7 +131,7 @@
       grid.innerHTML = '';
       const start = (page - 1) * PER_PAGE;
       const end = Math.min(start + PER_PAGE, albums.length);
-      console.log('Rendering page', page, 'showing albums', start, 'to', end);
+      
 
       for (let i = start; i < end; i++) {
         const album = albums[i];
@@ -160,25 +161,44 @@
 
     function renderPagination() {
       pagination.innerHTML = '';
-      console.log('Total pages:', totalPages);
       if (totalPages <= 1) return;
 
+      const pageNumbers = document.createElement('div');
+      pageNumbers.className = 'page-numbers';
+
+      const firstBtn = document.createElement('button');
+      firstBtn.innerHTML = '&#x23EE;';
+      firstBtn.title = '首页';
+      firstBtn.disabled = currentPage === 1;
+      firstBtn.onclick = () => { currentPage = 1; renderPage(1); window.scrollTo({top:0, behavior:'smooth'}); };
+
       const prevBtn = document.createElement('button');
-      prevBtn.textContent = '上一页';
+      prevBtn.innerHTML = '&#x25C0;';
+      prevBtn.title = '上一页';
       prevBtn.disabled = currentPage === 1;
-      prevBtn.onclick = () => { currentPage--; renderPage(currentPage); window.scrollTo({top:0,behavior:'smooth'}); };
-      pagination.appendChild(prevBtn);
+      prevBtn.onclick = () => { currentPage--; renderPage(currentPage); window.scrollTo({top:0, behavior:'smooth'}); };
 
       const info = document.createElement('span');
       info.className = 'page-info';
       info.textContent = currentPage + ' / ' + totalPages;
-      pagination.appendChild(info);
 
       const nextBtn = document.createElement('button');
-      nextBtn.textContent = '下一页';
+      nextBtn.innerHTML = '&#x25B6;';
+      nextBtn.title = '下一页';
       nextBtn.disabled = currentPage === totalPages;
-      nextBtn.onclick = () => { currentPage++; renderPage(currentPage); window.scrollTo({top:0,behavior:'smooth'}); };
+      nextBtn.onclick = () => { currentPage++; renderPage(currentPage); window.scrollTo({top:0, behavior:'smooth'}); };
+
+      const lastBtn = document.createElement('button');
+      lastBtn.innerHTML = '&#x23ED;';
+      lastBtn.title = '末页';
+      lastBtn.disabled = currentPage === totalPages;
+      lastBtn.onclick = () => { currentPage = totalPages; renderPage(totalPages); window.scrollTo({top:0, behavior:'smooth'}); };
+
+      pagination.appendChild(firstBtn);
+      pagination.appendChild(prevBtn);
+      pagination.appendChild(info);
       pagination.appendChild(nextBtn);
+      pagination.appendChild(lastBtn);
     }
 
     loadAlbums();
