@@ -1,0 +1,18 @@
+{
+  "name": "my-photography-diary-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "npx @11ty/eleventy",
+    "start": "npx @11ty/eleventy --serve",
+    "upload": "node scripts/upload-to-cloudinary.js"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.0"
+  },
+  "dependencies": {
+    "cloudinary": "^2.9.0",
+    "dotenv": "^17.4.1",
+    "sharp": "^0.34.5"
+  }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>捐助 - 龚仔的摄影日记</title>
+  <style>
+    :root{--bg:#0b0b0f;--card:#14161d;--text:#e9e9e9;--muted:#888;--accent:#e76f51;--border:rgba(255,255,255,.08)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+    a{color:inherit;text-decoration:none;transition:color .2s}
+    a:hover{color:var(--accent)}
+    .site-header{padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,11,15,.95);backdrop-filter:blur(8px);z-index:100}
+    .site-header h1{font-size:1.4rem;font-weight:600}
+    .site-nav a{margin-left:24px;color:var(--muted)}
+    .site-nav a:hover{color:var(--text)}
+    .container{max-width:800px;margin:0 auto;padding:48px 24px;flex:1;text-align:center}
+    .donate-title{font-size:2.5rem;margin-bottom:12px}
+    .donate-desc{color:var(--muted);margin-bottom:48px;font-size:1.1rem}
+    .donate-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin-top:32px}
+    .donate-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;transition:transform .3s,box-shadow .3s}
+    .donate-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+    .donate-card h3{font-size:1.3rem;margin-bottom:20px}
+    .donate-card img{max-width:100%;border-radius:8px;border:1px solid var(--border)}
+    .site-footer{text-align:center;padding:24px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
+    @media(max-width:640px){
+      .site-header{padding:12px 16px}
+      .container{padding:32px 16px}
+      .donate-title{font-size:1.8rem}
+      .donate-grid{grid-template-columns:1fr;gap:24px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1><a href="index.html">龚仔的摄影日记</a></h1>
+    <nav class="site-nav">
+      <a href="index.html">首页</a>
+      <a href="donate.html">捐助</a>
+    </nav>
+  </header>
+  <main class="container">
+    <h1 class="donate-title">支持一下</h1>
+    <p class="donate-desc">您的支持是我继续创作的动力</p>
+    <div class="donate-grid">
+      <div class="donate-card">
+        <h3>微信</h3>
+        <div style="background:rgba(255,255,255,.05);border:2px dashed #444;border-radius:12px;padding:40px 20px;color:var(--muted);">
+          <p style="margin-bottom:8px;">请上传微信收款码</p>
+          <small>demo/images/wechat.png</small>
+        </div>
+      </div>
+      <div class="donate-card">
+        <h3>支付宝</h3>
+        <div style="background:rgba(255,255,255,.05);border:2px dashed #444;border-radius:12px;padding:40px 20px;color:var(--muted);">
+          <p style="margin-bottom:8px;">请上传支付宝收款码</p>
+          <small>demo/images/alipay.png</small>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <p>© 2026 龚仔的摄影日记</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+backend:
+  name: git-gateway
+  branch: main
+media_folder: "static/images"
+public_folder: "/static/images"
+collections:
+  - name: "albums"
+    label: "相册"
+    folder: "content/albums"
+    create: true
+    slug: "{{date}}-{{slug}}"
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime" }
+      - { label: "封面图片", name: "coverImage", widget: "image" }
+      - label: "图片"
+        name: "images"
+        widget: "list"
+        fields:
+          - { label: "图片URL", name: "url", widget: "string", hint: "Cloudinary或图片URL" }
+          - { label: "描述", name: "caption", widget: "string", required: false }
+          - label: "相机参数"
+            name: "exif"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "相机型号", name: "camera", widget: "string", required: false }
+              - { label: "光圈", name: "fnumber", widget: "string", required: false, hint: "如 f/2.8" }
+              - { label: "快门速度", name: "exposureTime", widget: "string", required: false, hint: "如 1/200s" }
+              - { label: "ISO", name: "iso", widget: "string", required: false }
+              - { label: "焦距", name: "focalLength", widget: "string", required: false, hint: "如 50mm" }
