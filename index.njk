@@ -6,104 +6,122 @@
   <title>龚仔的摄影日记</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <style>
-    :root{--bg:#0b0b0f;--card:#14161d;--text:#e9e9e9;--muted:#888;--accent:#e76f51;--border:rgba(255,255,255,.08)}
+    :root{--bg:#0a0a0e;--card:#121218;--card-hover:#1a1a22;--text:#f0f0f2;--muted:#6b6b7a;--accent:#e07a5f;--border:#1e1e26}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{height:100%;-webkit-font-smoothing:antialiased}
-    body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;min-height:100%;display:flex;flex-direction:column}
-    a{color:inherit;text-decoration:none;transition:color .2s}
-    a:hover{color:var(--accent)}
-    .site-header{padding:16px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,11,15,.95);backdrop-filter:blur(8px);z-index:100;will-change:transform}
-    .site-header h1{font-size:1.4rem;font-weight:600}
-    .site-header h1 a:hover{color:var(--text)}
-    .site-nav a{margin-left:24px;color:var(--muted);font-size:.95rem}
-    .site-nav a:hover{color:var(--text)}
-    .container{padding:32px 12px;max-width:1800px;margin:0 auto;flex:1}
-    .page-title{font-size:1.8rem;margin-bottom:24px;padding-left:4px}
-    .page-desc{color:var(--muted);margin-bottom:24px;padding-left:4px}
-    .albums{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
-    .album{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .3s,box-shadow .3s;will-change:transform}
-    .album:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
-    .album-cover{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;opacity:0;will-change:opacity}
-    .album-info{padding:16px 18px}
-    .album-date{font-size:1.1rem;font-weight:600;margin-bottom:6px}
-    .album-cover.loaded{opacity:1;transition:opacity .3s ease-out}
-    .album-info{padding:14px 16px}
-    .album-date{font-size:1rem;font-weight:600;margin-bottom:4px}
-    .album-count{color:var(--muted);font-size:.85rem}
-    .pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:24px;padding:16px}
-    .pagination button{background:rgba(255,255,255,.1);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;transition:background .2s;font-size:.9rem}
-    .pagination button:hover:not(:disabled){background:rgba(255,255,255,.2)}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;line-height:1.7;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    ::selection{background:var(--accent);color:#fff}
+    ::-webkit-scrollbar{width:8px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--card);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--card-hover)}
+    .site-header{padding:20px 40px;display:flex;justify-content:flex-start;align-items:center;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 60%,transparent);backdrop-filter:blur(12px)}
+    .site-header h1{font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
+    .site-header h1 a{transition:opacity .2s}
+    .site-header h1 a:hover{opacity:.7}
+    .logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#e07a5f,#f2a07b);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .container{max-width:1400px;margin:0 auto;padding:20px 40px 60px;flex:1}
+    .hero{text-align:center;padding:60px 20px 80px}
+    .hero h1{font-size:2.8rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:16px;background:linear-gradient(135deg,var(--text) 0%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{color:var(--muted);font-size:1.1rem;max-width:500px;margin:0 auto}
+    .albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+    .album{background:var(--card);border-radius:16px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;border:1px solid var(--border)}
+    .album:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,.4);border-color:var(--accent)}
+    .album-cover{aspect-ratio:16/11;overflow:hidden;position:relative}
+    .album-cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+    .album:hover .album-cover img{transform:scale(1.08)}
+    .album-cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,.4),transparent);pointer-events:none}
+    .album-info{padding:20px 24px}
+    .album-date{font-size:1.15rem;font-weight:600;margin-bottom:6px;letter-spacing:-0.01em}
+    .album-count{color:var(--muted);font-size:.9rem;display:flex;align-items:center;gap:6px}
+    .album-count svg{width:16px;height:16px;opacity:.7}
+    .pagination{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:60px;padding:20px}
+    .pagination button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:12px;cursor:pointer;transition:all .2s;font-size:.95rem;font-weight:500}
+    .pagination button:hover:not(:disabled){background:var(--card-hover);border-color:var(--accent)}
     .pagination button:disabled{opacity:.4;cursor:not-allowed}
-    .pagination .page-info{color:#888;font-size:.9rem;padding:0 12px}
-    .site-footer{text-align:center;padding:24px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
-    .loading{text-align:center;padding:40px;color:var(--muted)}
-    .loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+    .pagination .page-info{color:var(--muted);font-size:.95rem;padding:0 8px}
+    .site-footer{text-align:center;padding:40px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
+    .site-footer a{color:var(--accent);transition:opacity .2s}
+    .site-footer a:hover{opacity:.8}
+    .loading{text-align:center;padding:100px 20px;color:var(--muted)}
+    .loading-spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .empty{text-align:center;padding:80px 20px;color:var(--muted)}
+    .empty-icon{font-size:4rem;margin-bottom:16px;opacity:.5}
     @media(max-width:768px){
-      .site-header{padding:12px 16px}
-      .site-header h1{font-size:1.2rem}
-      .container{padding:16px}
-      .albums{grid-template-columns:repeat(2,1fr);gap:10px}
+      .site-header{padding:16px 20px}
+      .hero{padding:40px 16px 60px}
+      .hero h1{font-size:2rem}
+      .container{padding:16px 20px 40px}
+      .albums{grid-template-columns:1fr;gap:16px}
+      .album-info{padding:16px 18px}
     }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <h1><a href="/">龚仔的摄影日记</a></h1>
-    <nav class="site-nav">
-      <a href="/">首页</a>
-      <a href="/donate/">捐助</a>
-    </nav>
+    <h1>
+      <span class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="19" cy="8" r="2" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <a href="/">龚仔的摄影日记</a>
+    </h1>
   </header>
   <main class="container">
-    <h1 class="page-title">时光相册</h1>
-    <p class="page-desc">记录每一个美妙瞬间</p>
+    <section class="hero">
+      <h1>记录生活，定格美好</h1>
+      <p>用镜头捕捉每一个值得珍藏的瞬间</p>
+    </section>
     <div id="loadingState" class="loading">
       <div class="loading-spinner"></div>
       <p>正在加载相册...</p>
+    </div>
+    <div id="emptyState" class="empty" style="display:none">
+      <div class="empty-icon">📭</div>
+      <p>暂无相册</p>
     </div>
     <div class="albums" id="albumGrid" style="display:none"></div>
     <div class="pagination" id="pagination" style="display:none"></div>
   </main>
   <footer class="site-footer">
-    <p>© 2026 龚仔的摄影日记</p>
+    <p>© 2026 龚仔的摄影日记 | <a href="https://v.douyin.com/Hc74k9FgjPY/" target="_blank">@龚仔仔仔仔</a></p>
   </footer>
   <script>
     const grid = document.getElementById('albumGrid');
     const pagination = document.getElementById('pagination');
     const loading = document.getElementById('loadingState');
-    const PER_PAGE = 9;
+    const emptyState = document.getElementById('emptyState');
+    const PER_PAGE = 12;
     let currentPage = 1;
     let albums = [];
     let totalPages = 1;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          if (img.dataset.src) {
-            img.src = img.dataset.src;
-            img.classList.add('loaded');
-            observer.unobserve(img);
-          }
-        }
-      });
-    }, { rootMargin: '100px' });
-
     async function loadAlbums() {
       try {
-        const response = await fetch('/.netlify/functions/albums');
+        const apiBase = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const response = await fetch(apiBase + '/.netlify/functions/albums');
         if (!response.ok) throw new Error('Failed to load');
         const data = await response.json();
         albums = data.albums || [];
-        totalPages = Math.ceil(albums.length / PER_PAGE) || 1;
+        totalPages = Math.max(1, Math.ceil(albums.length / PER_PAGE));
+        console.log('Loaded albums:', albums.length, 'Total pages:', totalPages);
         loading.style.display = 'none';
-        grid.style.display = 'grid';
-        pagination.style.display = 'flex';
-        renderPage(1);
+        if (albums.length === 0) {
+          emptyState.style.display = 'block';
+        } else {
+          grid.style.display = 'grid';
+          pagination.style.display = 'flex';
+          renderPage(1);
+        }
       } catch (error) {
         console.error('Load error:', error);
-        loading.innerHTML = '<p>加载失败，请刷新重试</p>';
+        loading.innerHTML = '<p>加载失败，请确保本地API服务器已启动<br><br>运行: <strong>npm run dev</strong></p>';
       }
     }
 
@@ -112,24 +130,29 @@
       grid.innerHTML = '';
       const start = (page - 1) * PER_PAGE;
       const end = Math.min(start + PER_PAGE, albums.length);
-
-      if (albums.length === 0) {
-        grid.innerHTML = '<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">暂无相册</p>';
-        return;
-      }
+      console.log('Rendering page', page, 'showing albums', start, 'to', end);
 
       for (let i = start; i < end; i++) {
         const album = albums[i];
+        const coverUrl = album.coverImage || (album.images && album.images[0] && album.images[0].url) || '';
+        const photoCount = album.images ? album.images.length : 0;
+        
         const article = document.createElement('article');
         article.className = 'album';
-        article.innerHTML = '<a href="' + album.url + '"><img class="album-cover" data-src="' + album.coverImage + '" alt="' + album.date + '" loading="lazy"><div class="album-info"><div class="album-date">' + album.date + '</div><div class="album-count">' + album.images.length + ' 张照片</div></div></a>';
+        article.innerHTML = `
+          <div class="album-cover">
+            <img src="${coverUrl}" alt="${album.date}" loading="lazy">
+          </div>
+          <div class="album-info">
+            <div class="album-date">${album.date}</div>
+            <div class="album-count">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              ${photoCount} 张照片
+            </div>
+          </div>
+        `;
+        article.onclick = () => { window.location.href = album.url; };
         grid.appendChild(article);
-        const img = article.querySelector('img');
-        if (img.complete) {
-          img.classList.add('loaded');
-        } else {
-          observer.observe(img);
-        }
       }
 
       renderPagination();
@@ -137,6 +160,7 @@
 
     function renderPagination() {
       pagination.innerHTML = '';
+      console.log('Total pages:', totalPages);
       if (totalPages <= 1) return;
 
       const prevBtn = document.createElement('button');

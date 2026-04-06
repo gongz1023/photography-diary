@@ -6,78 +6,95 @@
   <title id="pageTitle">加载中... - 龚仔的摄影日记</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <style>
-    :root{--bg:#0b0b0f;--card:#14161d;--text:#e9e9e9;--muted:#888;--accent:#e76f51;--border:rgba(255,255,255,.08)}
+    :root{--bg:#0a0a0e;--card:#121218;--card-hover:#1a1a22;--text:#f0f0f2;--muted:#6b6b7a;--accent:#e07a5f;--border:#1e1e26}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{height:100%;-webkit-font-smoothing:antialiased}
-    body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6;min-height:100%;display:flex;flex-direction:column}
-    a{color:inherit;text-decoration:none;transition:color .2s}
-    a:hover{color:var(--accent)}
-    .site-header{padding:16px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,11,15,.95);backdrop-filter:blur(8px);z-index:100;will-change:transform}
-    .site-header h1{font-size:1.4rem;font-weight:600}
-    .site-nav a{margin-left:24px;color:var(--muted)}
-    .site-nav a:hover{color:var(--text)}
-    .container{padding:24px 20px;max-width:1400px;margin:0 auto;flex:1}
-    .back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:var(--muted);font-size:.9rem;padding:6px 12px;border-radius:6px;background:rgba(255,255,255,.05)}
-    .back-link:hover{color:var(--text);background:rgba(255,255,255,.1)}
-    .album-header{margin-bottom:24px}
-    .album-date{font-size:1.8rem;margin-bottom:4px;font-weight:600}
-    .album-count{color:var(--muted);font-size:.95rem}
-    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:0 auto}
-    .pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:24px;padding:16px}
-    .pagination button{background:rgba(255,255,255,.1);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;transition:background .2s;font-size:.9rem}
-    .pagination button:hover:not(:disabled){background:rgba(255,255,255,.2)}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;line-height:1.7;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    ::selection{background:var(--accent);color:#fff}
+    ::-webkit-scrollbar{width:8px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--card);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--card-hover)}
+    .site-header{padding:20px 40px;display:flex;justify-content:flex-start;align-items:center;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 60%,transparent);backdrop-filter:blur(12px)}
+    .site-header h1{font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
+    .site-header h1 a{transition:opacity .2s}
+    .site-header h1 a:hover{opacity:.7}
+    .logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#e07a5f,#f2a07b);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .container{max-width:1400px;margin:0 auto;padding:20px 40px 60px;flex:1}
+    .back-link{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:.9rem;transition:all .2s;margin-bottom:32px}
+    .back-link:hover{color:var(--text);border-color:var(--accent);background:var(--card-hover)}
+    .back-link svg{width:18px;height:18px;transition:transform .2s}
+    .back-link:hover svg{transform:translateX(-4px)}
+    .album-header{margin-bottom:40px}
+    .album-date{font-size:2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px}
+    .album-count{color:var(--muted);font-size:1rem;display:flex;align-items:center;gap:8px}
+    .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .photo-item{aspect-ratio:4/3;border-radius:12px;overflow:hidden;cursor:pointer;position:relative;background:var(--card)}
+    .photo-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s,filter .4s}
+    .photo-item::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(0,0,0,.3));opacity:0;transition:opacity .3s;z-index:1}
+    .photo-item:hover img{transform:scale(1.08)}
+    .photo-item:hover::before{opacity:1}
+    .pagination{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:60px;padding:20px}
+    .pagination button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:12px;cursor:pointer;transition:all .2s;font-size:.95rem;font-weight:500}
+    .pagination button:hover:not(:disabled){background:var(--card-hover);border-color:var(--accent)}
     .pagination button:disabled{opacity:.4;cursor:not-allowed}
-    .pagination .page-info{color:#888;font-size:.9rem;padding:0 12px}
-    .photo-item{position:relative;overflow:hidden;border-radius:6px;aspect-ratio:4/3;cursor:pointer;background:var(--card);contain:layout}
-    .photo-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,var(--card) 0%,rgba(255,255,255,.03) 100%);display:flex;align-items:center;justify-content:center}
-    .photo-placeholder::after{content:'';width:24px;height:24px;border:2px solid rgba(255,255,255,.1);border-top-color:rgba(255,255,255,.4);border-radius:50%;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .photo-item img{width:100%;height:100%;object-fit:cover;opacity:0;will-change:opacity}
-    .photo-item img.loaded{opacity:1;transition:opacity .3s ease-out}
-    .photo-item:hover img{transform:scale(1.03)}
-    .photo-item.loaded .photo-placeholder{display:none}
-    .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.98);z-index:1000;align-items:center;justify-content:center;flex-direction:column}
+    .pagination .page-info{color:var(--muted);font-size:.95rem;padding:0 8px}
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center}
     .lightbox.active{display:flex}
-    .lightbox-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:2rem;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;z-index:10}
-    .lightbox-close:hover{background:rgba(255,255,255,.2)}
-    .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.5rem;cursor:pointer;width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s}
-    .lightbox-nav:hover{background:rgba(255,255,255,.2)}
-    .lightbox-nav.prev{left:20px}
-    .lightbox-nav.next{right:20px}
-    .lightbox-content{max-width:90vw;max-height:75vh;display:flex;align-items:center;justify-content:center}
-    .lightbox-content img{max-width:100%;max-height:75vh;object-fit:contain;border-radius:4px}
-    .lightbox-info{margin-top:16px;text-align:center;padding:0 80px}
-    .lb-counter{font-size:.9rem;color:#888;margin-bottom:4px}
-    .lb-filename{font-size:1rem;color:#ccc}
-    .site-footer{text-align:center;padding:24px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;margin-top:auto}
-    .loading{text-align:center;padding:60px 20px}
-    .loading-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
+    .lightbox-close{position:absolute;top:24px;right:24px;width:48px;height:48px;background:var(--card);border:none;border-radius:50%;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1.2rem;border:1px solid var(--border)}
+    .lightbox-close:hover{background:var(--card-hover);border-color:var(--accent)}
+    .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;background:var(--card);border:none;border-radius:50%;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1.4rem;border:1px solid var(--border)}
+    .lightbox-nav:hover{background:var(--card-hover);border-color:var(--accent)}
+    .lightbox-nav.prev{left:24px}
+    .lightbox-nav.next{right:24px}
+    .lightbox-content{max-width:90vw;max-height:80vh;display:flex;align-items:center;justify-content:center}
+    .lightbox-content img{max-width:100%;max-height:80vh;object-fit:contain;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .lightbox-info{margin-top:20px;text-align:center;padding:0 24px}
+    .lb-counter{color:var(--muted);font-size:.9rem;margin-bottom:4px}
+    .lb-filename{color:var(--text);font-size:.95rem}
+    .site-footer{text-align:center;padding:40px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;margin-top:auto}
+    .site-footer a{color:var(--accent);transition:opacity .2s}
+    .site-footer a:hover{opacity:.8}
+    .loading{text-align:center;padding:100px 20px;color:var(--muted)}
+    .loading-spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px}
+    @keyframes spin{to{transform:rotate(360deg)}}
     @media(max-width:768px){
-      .site-header{padding:12px 16px}
-      .container{padding:16px 12px}
+      .site-header{padding:16px 20px}
+      .container{padding:16px 20px 40px}
       .album-date{font-size:1.5rem}
-      .photo-grid{grid-template-columns:repeat(2,1fr);gap:10px;max-width:none}
-      .lightbox-nav{width:40px;height:40px;font-size:1.2rem}
-      .lightbox-nav.prev{left:10px}
-      .lightbox-nav.next{right:10px}
-      .lightbox-info{padding:0 60px}
+      .photo-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+      .back-link{margin-bottom:24px;padding:8px 14px;font-size:.85rem}
+      .lightbox-nav{width:44px;height:44px}
+      .lightbox-nav.prev{left:12px}
+      .lightbox-nav.next{right:12px}
+      .lightbox-close{top:16px;right:16px;width:40px;height:40px}
     }
     @media(max-width:480px){
-      .photo-grid{gap:8px}
+      .photo-grid{grid-template-columns:repeat(2,1fr);gap:8px}
       .lightbox-nav{display:none}
     }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <h1><a href="/">龚仔的摄影日记</a></h1>
-    <nav class="site-nav">
-      <a href="/">首页</a>
-      <a href="/donate/">捐助</a>
-    </nav>
+    <h1>
+      <span class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="19" cy="8" r="2" fill="#fff" stroke="none"/>
+        </svg>
+      </span>
+      <a href="/">龚仔的摄影日记</a>
+    </h1>
   </header>
   <main class="container">
-    <a href="/" class="back-link">← 返回相册列表</a>
+    <a href="/" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+      返回相册
+    </a>
     <div id="loadingState" class="loading">
       <div class="loading-spinner"></div>
       <p>正在加载照片...</p>
@@ -87,14 +104,14 @@
         <h1 class="album-date" id="albumDate"></h1>
         <p class="album-count" id="albumCount"></p>
       </div>
-      <section class="photo-grid" id="photoGrid"></section>
+      <div class="photo-grid" id="photoGrid"></div>
       <div class="pagination" id="pagination"></div>
     </div>
   </main>
   <div id="lightbox" class="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <button class="lightbox-nav prev" onclick="prevImage()">‹</button>
-    <button class="lightbox-nav next" onclick="nextImage()">›</button>
+    <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+    <button class="lightbox-nav prev" onclick="prevImage()">&#x276E;</button>
+    <button class="lightbox-nav next" onclick="nextImage()">&#x276F;</button>
     <div class="lightbox-content">
       <img id="lb-img" src="" alt="">
     </div>
@@ -104,7 +121,7 @@
     </div>
   </div>
   <footer class="site-footer">
-    <p>© 2026 龚仔的摄影日记</p>
+    <p>© 2026 龚仔的摄影日记 | <a href="https://v.douyin.com/Hc74k9FgjPY/" target="_blank">@龚仔仔仔仔</a></p>
   </footer>
   <script>
     const pathParts = window.location.pathname.split('/').filter(Boolean);
@@ -115,7 +132,7 @@
     const pagination = document.getElementById('pagination');
     const loading = document.getElementById('loadingState');
     const content = document.getElementById('albumContent');
-    const PER_PAGE = 9;
+    const PER_PAGE = 12;
     let currentPage = 1;
     let totalPages = 1;
 
@@ -126,7 +143,8 @@
       }
 
       try {
-        const response = await fetch(`/.netlify/functions/album?folder=${encodeURIComponent(folder)}`);
+        const apiBase = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const response = await fetch(apiBase + '/.netlify/functions/album?folder=' + encodeURIComponent(folder));
         if (!response.ok) throw new Error('Failed to load');
         const data = await response.json();
         images = data.images || [];
@@ -135,36 +153,22 @@
         document.getElementById('albumDate').textContent = folder;
         document.getElementById('albumCount').textContent = images.length + ' 张照片';
         
-        totalPages = Math.ceil(images.length / PER_PAGE) || 1;
+        totalPages = Math.max(1, Math.ceil(images.length / PER_PAGE));
         loading.style.display = 'none';
         content.style.display = 'block';
         renderPage(1);
       } catch (error) {
         console.error('Load error:', error);
-        loading.innerHTML = '<p>加载失败，请刷新重试</p>';
+        loading.innerHTML = '<p>加载失败，请确保本地API服务器已启动<br><br>运行: <strong>npm run dev</strong></p>';
       }
     }
 
     function createPhotoItem(img, index) {
       const div = document.createElement('div');
       div.className = 'photo-item';
-      div.innerHTML = '<div class="photo-placeholder"></div><img data-src="' + img.url + '" alt="' + img.filename + '">';
-      div.addEventListener('click', () => {
-        openLightbox(index);
-      });
+      div.innerHTML = '<img src="' + img.url + '" alt="' + img.filename + '" loading="lazy">';
+      div.addEventListener('click', () => { openLightbox(index); });
       return div;
-    }
-
-    function loadImage(img) {
-      if (img.classList.contains('loaded')) return;
-      const src = img.dataset.src;
-      const temp = new Image();
-      temp.onload = () => {
-        img.src = src;
-        img.classList.add('loaded');
-        img.parentElement.classList.add('loaded');
-      };
-      temp.src = src;
     }
 
     function renderPage(page) {
@@ -173,15 +177,9 @@
       const start = (page - 1) * PER_PAGE;
       const end = Math.min(start + PER_PAGE, images.length);
 
-      if (images.length === 0) {
-        grid.innerHTML = '<p style="color:var(--muted);text-align:center;grid-column:1/-1;padding:40px">暂无照片</p>';
-        return;
-      }
-
       for (let i = start; i < end; i++) {
         const item = createPhotoItem(images[i], i);
         grid.appendChild(item);
-        requestAnimationFrame(() => loadImage(item.querySelector('img')));
       }
 
       renderPagination();
@@ -211,35 +209,43 @@
 
     loadAlbum();
 
-    function openLightbox(index){
-      currentIndex=index;
+    function openLightbox(index) {
+      currentIndex = index;
       updateLightbox();
       document.getElementById('lightbox').classList.add('active');
-      document.body.style.overflow='hidden';
+      document.body.style.overflow = 'hidden';
     }
-    function closeLightbox(){
+
+    function closeLightbox() {
       document.getElementById('lightbox').classList.remove('active');
-      document.body.style.overflow='';
+      document.body.style.overflow = '';
     }
-    function updateLightbox(){
-      document.getElementById('lb-img').src=images[currentIndex].url;
-      document.getElementById('lb-filename').textContent=images[currentIndex].filename;
-      document.getElementById('lb-counter').textContent=(currentIndex+1)+' / '+images.length;
+
+    function updateLightbox() {
+      document.getElementById('lb-img').src = images[currentIndex].url;
+      document.getElementById('lb-filename').textContent = images[currentIndex].filename;
+      document.getElementById('lb-counter').textContent = (currentIndex + 1) + ' / ' + images.length;
     }
-    function prevImage(){
-      currentIndex=(currentIndex-1+images.length)%images.length;
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
       updateLightbox();
     }
-    function nextImage(){
-      currentIndex=(currentIndex+1)%images.length;
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
       updateLightbox();
     }
-    document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox()});
-    document.addEventListener('keydown',e=>{
-      if(!document.getElementById('lightbox').classList.contains('active'))return;
-      if(e.key==='Escape')closeLightbox();
-      if(e.key==='ArrowLeft')prevImage();
-      if(e.key==='ArrowRight')nextImage();
+
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target.id === 'lightbox') closeLightbox();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
     });
   </script>
 </body>
