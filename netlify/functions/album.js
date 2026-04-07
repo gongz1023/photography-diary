@@ -13,14 +13,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports = async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+exports.handler = async function(event, context) {
+  if (event.httpMethod !== 'GET') {
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
-  const { folder } = req.query;
+  const params = event.queryStringParameters || {};
+  const folder = params.folder;
+  
   if (!folder) {
-    return res.status(400).json({ error: 'Missing folder parameter' });
+    return { statusCode: 400, body: JSON.stringify({ error: 'Missing folder parameter' }) };
   }
 
   try {
@@ -48,12 +50,18 @@ module.exports = async function handler(req, res) {
       };
     });
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', 'public, max-age=300');
-    res.json({ folder, images, total: images.length });
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=300'
+      },
+      body: JSON.stringify({ folder, images, total: images.length })
+    };
 
   } catch (error) {
     console.error('Cloudinary API error:', error);
-    res.status(500).json({ error: error.message });
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
